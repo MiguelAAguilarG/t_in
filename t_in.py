@@ -421,23 +421,21 @@ while validacion == '':
 	tense = constructor(tenses_list,repeticion_lista_tense,True)
 	tipo = constructor(constructor_type_list(tense),repeticion_lista_tipo,False)
 
-	if z <= 4:
-		verb = constructor(verbs_regular,repeticion_lista_verb,True)
-		z = z+1
-	else:
-		verb = constructor(verbs_iregular,repeticion_lista_verb,True)
-		z = 0
-
 	print('1. ' + subject)
 	print('2. ' + tense)
 	print('3. ' + tipo)
-	print('4. ' + verb)
-	if z <= 4:
-		print('** (' + verbs_regular_traduction[verbs_regular.index(verb)] + ')')
-	else:
-		print('** (' + verbs_iregular_traduction[verbs_iregular.index(verb)] + ')' )
 
-	
+	if z <= 4:
+		verb = constructor(verbs_regular,repeticion_lista_verb,True)
+		print('4. ' + verb)
+		print('** (' + verbs_regular_traduction[verbs_regular.index(verb)] + ')')
+		z = z+1
+	else:
+		verb = constructor(verbs_iregular,repeticion_lista_verb,True)
+		print('4. ' + verb)
+		print('** (' + verbs_iregular_traduction[verbs_iregular.index(verb)] + ')' )
+		z = 0
+		
 	conjugacion = '---' + input('***Ingresa la conjugacion correcta: \n---')
 
 	print('***La conjuación correcta es: ')
