@@ -1,2 +1,2 @@
 # t_in
-Conjugador de verbos regulares en ingles
+Conjugador de verbos irregulares en ingles
