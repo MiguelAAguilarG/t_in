@@ -292,16 +292,13 @@ def constructor(lista,repeticion_lista,limpia):
 
 	while True:
 		r = random.choice(numeros_buscar_lista)
-
-		if (not r in repeticion_lista) and (limpia == True):
-
-			repeticion_lista.append(r)
-			numeros_buscar_lista.remove(r)
+		if not r in repeticion_lista:
+			if limpia == True:
+				repeticion_lista.append(r)
+			return lista[r]
 
 		if (len(repeticion_lista) == len(lista)) and (limpia == True):
-			del repeticion_lista[:]	
-
-		return lista[r]
+			del repeticion_lista[:]
 
 def constructor_type_list(tense):
 	if tense == 'past':
@@ -323,10 +320,20 @@ def constructor_tense_verb(subject, tense, tipo, verb):
 	elif tense == 'present':
 		if tipo != 'continuous/progressive' or tipo != 'perfect continuous/progressive':
 			if subject in subjects_pronouns_list_3:
-				if verb[-1] == 'e':
-					verb_t_v = verb + 's'
-				else:
-					verb_t_v = verb + 'es'
+				while True:
+					if verb[-1] in ['x','z','o']:
+						verb_t_v = verb + 'es'
+						break
+					elif verb[-2:] in ['ss','sh','ch']:
+						verb_t_v = verb + 'es'
+						break
+					elif verb[-1] == 'y':
+						if not verb[-2] in ['a','e','i','o','u']:
+							verb_t_v = verb[:-1] + 'ies'
+							break
+					else:
+						verb_t_v = verb + 's'
+						break
 			else:
 				verb_t_v = verb
 		else:
