@@ -2,6 +2,7 @@ import random
 import os
 
 '''
+https://www.shertonenglish.com/es/gramatica/voz-activa-en-ingles
 present simple
 present continuous
 present perfect
@@ -17,7 +18,15 @@ future continuous
 future perfect
 future perfect continuous
 
-future -be going to-
+future -be going to- simple
+future -be going to- continuous
+future -be going to- perfect
+future -be going to- perfect continuous
+
+future -be going to- paast simple
+future -be going to- paast continuous
+future -be going to- paast perfect
+future -be going to- paast perfect continuous
 
 conditional
 conditional continuous
@@ -34,15 +43,10 @@ subjects_pronouns_list = subjects_pronouns_list_1 + subjects_pronouns_list_2 + s
 subjects_pronouns_list_singular = subjects_pronouns_list_1 + subjects_pronouns_list_2 + subjects_pronouns_list_3
 subjects_pronouns_list_plural = subjects_pronouns_list_2 + subjects_pronouns_list_4
 ###########################################################
-tenses_list = ['past', 'present', 'future', 'conditional']
-types_list_past = ['simple','continuous/progressive','perfect','perfect continuous/progressive']
-types_list_present = types_list_past.copy()
-types_list_future = types_list_past.copy()
-types_list_future.append('-be going to-')
-types_list_conditional = types_list_past.copy()
+tenses_list = ['past', 'present', 'future','future -be going to-','future -be going to- past', 'conditional']
+types_list = ['simple','continuous/progressive','perfect','perfect continuous/progressive']
 ###########################################################
 verbs_to_be = ['am ','are ','is ']
-verbs_to_be_past = ['was ','were ']
 verbs_to_be_past = ['was ','were ']
 
 verbs_to_have = ['have ','has ']
@@ -187,13 +191,6 @@ verbs_iregular_participio = ['beaten', 'become', 'begun',
 'thought', 'thrown', 'understood', 'woken', 'worn', 'wept', 
 'won', 'written']
 
-#print(len(verbs_regular))
-#print(len(verbs_regular_traduction))
-#print(len(verbs_iregular))
-#print(len(verbs_iregular_traduction))
-#print(len(verbs_iregular_past))
-#print(len(verbs_iregular_participio))
-
 def constructor_verb_past(verb):
 	if verb in verbs_regular:
 		while True:
@@ -228,9 +225,6 @@ def constructor_participio(verb):
 			if verb[-1] == 'e':
 				verb_p = verb + 'd'
 				break
-			if verb[-1] == 'y':
-				verb_p = verb[:-1] + 'ied'
-				break
 			if not verb[-1] in ['a','e','i','o','u']:
 				if verb[-2] in ['a','e','i','o','u']:
 					if not verb[-3] in ['a','e','i','o','u']:
@@ -238,6 +232,13 @@ def constructor_participio(verb):
 							if not verb[-1] in ['c','x','w','y']:
 								verb_p =  verb + verb[-1] + 'ed '
 								break
+			if verb[-1] == 'y':
+				if verb[-2] in ['a','e','i','o','u']:
+					verb_p =  verb + 'ed '
+					break
+				else: 								
+					verb_p = verb[:-1] + 'ied'
+					break
 			if verb[-1] == 'c':
 				if verb[-2] == ['a','e','i','o','u']:
 					verb_p =  verb + 'ked'
@@ -255,7 +256,7 @@ def constructor_verb_continuous(verb):
 		if verb[-1] == 'e':
 			verb_c = verb[:-1] + 'ing'
 			break
-		if not verb[-1] in ['a','e','i','o','u']:
+		if not verb[-1] in ['a','e','i','o','u','y']:
 			if verb[-2] in ['a','e','i','o','u']:
 				if not verb[-3] in ['a','e','i','o','u']:
 					if len(verb) <= 4:
@@ -284,7 +285,12 @@ def constructor_verb_continuous(verb):
 
 repeticion_lista_subject = []
 repeticion_lista_tense = []
+
 repeticion_lista_tipo = []
+
+for x in tenses_list:
+	repeticion_lista_tipo.append([])
+
 repeticion_lista_verb = []
 				
 def constructor(lista,repeticion_lista,limpia):
@@ -299,17 +305,6 @@ def constructor(lista,repeticion_lista,limpia):
 
 		if (len(repeticion_lista) == len(lista)) and (limpia == True):
 			del repeticion_lista[:]
-
-def constructor_type_list(tense):
-	if tense == 'past':
-		types_list = types_list_past
-	elif tense == 'present':
-		types_list = types_list_present
-	elif tense == 'future':
-		types_list = types_list_future
-	elif tense == 'conditional':
-		types_list = types_list_conditional
-	return types_list
 
 def constructor_tense_verb(subject, tense, tipo, verb):
 	if tense == 'past':
@@ -331,6 +326,9 @@ def constructor_tense_verb(subject, tense, tipo, verb):
 						if not verb[-2] in ['a','e','i','o','u']:
 							verb_t_v = verb[:-1] + 'ies'
 							break
+						else:
+							verb_t_v = verb + 's'
+							break
 					else:
 						verb_t_v = verb + 's'
 						break
@@ -341,6 +339,26 @@ def constructor_tense_verb(subject, tense, tipo, verb):
 	elif tense == 'future':
 		if tipo != 'continuous/progressive' or tipo != 'perfect continuous/progressive':
 			verb_t_v = 'will ' + verb 
+		else:
+			verb_t_v = verb
+	elif tense == 'future -be going to-':
+		if tipo != 'continuous/progressive' or tipo != 'perfect continuous/progressive':
+			if subject in subjects_pronouns_list_1:
+				verb_t_v = verbs_to_be[0] + 'going to ' + verb
+			elif subject in subjects_pronouns_list_3:
+				verb_t_v = verbs_to_be[2] + 'going to ' + verb
+			else:
+				verb_t_v = verbs_to_be[1] + 'going to ' + verb 
+		else:
+			verb_t_v = verb
+	elif tense == 'future -be going to- past':
+		if tipo != 'continuous/progressive' or tipo != 'perfect continuous/progressive':
+			if subject in subjects_pronouns_list_1:
+				verb_t_v = verbs_to_be_past[0] + 'going to ' + verb
+			elif subject in subjects_pronouns_list_3:
+				verb_t_v = verbs_to_be_past[0] + 'going to ' + verb
+			else:
+				verb_t_v = verbs_to_be_past[1] + 'going to ' + verb 
 		else:
 			verb_t_v = verb
 	elif tense == 'conditional':
@@ -356,7 +374,7 @@ def constructor_type(subject, tense, tipo, verb_t_v, verb):
 		verb_t = verb_t_v
 	elif tipo == 'continuous/progressive':
 		if tense == 'past':
-			if subject in subjects_pronouns_list_1 or subjects_pronouns_list_3:
+			if subject in subjects_pronouns_list_1 or subject in subjects_pronouns_list_3:
 				verb_t = verbs_to_be_past[0]
 			else:
 				verb_t = verbs_to_be_past[1]
@@ -369,6 +387,20 @@ def constructor_type(subject, tense, tipo, verb_t_v, verb):
 				verb_t = verbs_to_be[1]
 		elif tense == 'future':
 			verb_t = 'will ' + 'be '
+		elif tense == 'future -be going to-':
+			if subject in subjects_pronouns_list_1:
+				verb_t = verbs_to_be[0] + 'going to ' + 'be '
+			elif subject in subjects_pronouns_list_3:
+				verb_t = verbs_to_be[2] + 'going to ' + 'be '
+			else:
+				verb_t = verbs_to_be[1] + 'going to ' + 'be '
+		elif tense == 'future -be going to- past':
+			if subject in subjects_pronouns_list_1:
+				verb_t = verbs_to_be_past[0] + 'going to ' + 'be '
+			elif subject in subjects_pronouns_list_3:
+				verb_t = verbs_to_be_past[0] + 'going to ' + 'be '
+			else:
+				verb_t = verbs_to_be_past[1] + 'going to ' + 'be ' 
 		elif tense == 'conditional':
 			verb_t = 'would ' + 'be '
 		verb_t = verb_t + constructor_verb_continuous(verb)
@@ -383,6 +415,20 @@ def constructor_type(subject, tense, tipo, verb_t_v, verb):
 				verb_t = verbs_to_have[0]
 		elif tense == 'future':
 			verb_t = 'will ' + 'have '
+		elif tense == 'future -be going to-':
+			if subject in subjects_pronouns_list_1:
+				verb_t = verbs_to_be[0] + 'going to ' + 'have '
+			elif subject in subjects_pronouns_list_3:
+				verb_t = verbs_to_be[2] + 'going to ' + 'have '
+			else:
+				verb_t = verbs_to_be[1] + 'going to ' + 'have '
+		elif tense == 'future -be going to- past':
+			if subject in subjects_pronouns_list_1:
+				verb_t = verbs_to_be_past[0] + 'going to ' + 'have '
+			elif subject in subjects_pronouns_list_3:
+				verb_t = verbs_to_be_past[0] + 'going to ' + 'have '
+			else:
+				verb_t = verbs_to_be_past[1] + 'going to ' + 'have ' 
 		else:
 			verb_t = 'would ' + 'have '
 		verb_t =  verb_t + constructor_participio(verb)
@@ -397,17 +443,24 @@ def constructor_type(subject, tense, tipo, verb_t_v, verb):
 				verb_t = verbs_to_have[0] + 'been '
 		elif tense == 'future':
 			verb_t = 'will ' + 'have ' + 'been '
+		elif tense == 'future -be going to-':
+			if subject in subjects_pronouns_list_1:
+				verb_t = verbs_to_be[0] + 'going to ' + 'have ' + 'been '
+			elif subject in subjects_pronouns_list_3:
+				verb_t = verbs_to_be[2] + 'going to ' + 'have ' + 'been '
+			else:
+				verb_t = verbs_to_be[1] + 'going to ' + 'have ' + 'been '
+		elif tense == 'future -be going to- past':
+			if subject in subjects_pronouns_list_1:
+				verb_t = verbs_to_be_past[0] + 'going to ' + 'have ' + 'been '
+			elif subject in subjects_pronouns_list_3:
+				verb_t = verbs_to_be_past[0] + 'going to ' + 'have ' + 'been '
+			else:
+				verb_t = verbs_to_be_past[1] + 'going to ' + 'have ' + 'been '
 		elif tense == 'conditional':
 			verb_t = 'would ' + 'have ' + 'been '
 
 		verb_t = verb_t + constructor_verb_continuous(verb)
-	elif tipo == '-be going to-':
-		if subject in subjects_pronouns_list_1:
-			verb_t = verbs_to_be[0] + 'going to ' + verb
-		elif subject in subjects_pronouns_list_3:
-			verb_t = verbs_to_be[2] + 'going to ' + verb
-		else:
-			verb_t = verbs_to_be[1] + 'going to ' + verb
 
 	return verb_t
 
@@ -426,7 +479,8 @@ while validacion == '':
 
 	subject = constructor(subjects_pronouns_list,repeticion_lista_subject,True)
 	tense = constructor(tenses_list,repeticion_lista_tense,True)
-	tipo = constructor(constructor_type_list(tense),repeticion_lista_tipo,False)
+	indice = tenses_list.index(tense)
+	tipo = constructor(types_list,repeticion_lista_tipo[indice],True)
 
 	print('1. ' + subject)
 	print('2. ' + tense)
