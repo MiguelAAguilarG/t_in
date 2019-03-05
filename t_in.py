@@ -509,6 +509,7 @@ while validacion == '':
 	else:
 		print('---ERROR. INCORRECTO')
 		e = e+1
+	print(f'intentos: {i+1}')
 	validacion = input('Continuar [enter]/ Salir [Cualquier tecla]: ')
 	i = i+1
 
